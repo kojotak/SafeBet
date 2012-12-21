@@ -14,7 +14,14 @@ public class SafeBet {
 	static final int MAX_MIRRORS_OF_GIVEN_TYPE = 200000;
 
 	public static enum Type {
-		SLASH, BACKSLASH
+		SLASH('/'), BACKSLASH('\\');
+
+		public final char sign;
+
+		private Type(char sign) {
+			this.sign = sign;
+		}
+
 	}
 
 	public static class Mirror {
@@ -33,6 +40,11 @@ public class SafeBet {
 			this.type = type;
 		}
 
+		@Override
+		public String toString() {
+			return "Mirror(row=" + row + ",column=" + column + ",type=" + type.sign + ")";
+		}
+
 	}
 
 	public static class Cfg {
@@ -49,7 +61,7 @@ public class SafeBet {
 
 		@Override
 		public String toString() {
-			return "Configuration (rows=" + rows + ", columns=" + columns + ", mirrors=" + mirrors.size() + ")";
+			return "Configuration(rows=" + rows + ", columns=" + columns + ", mirrors=" + mirrors + ")";
 		}
 	}
 
@@ -137,8 +149,7 @@ public class SafeBet {
 
 	/** resolve one configuration */
 	private String resolve(Cfg cfg) {
-		// TODO Auto-generated method stub
-		return null;
+		return cfg.toString() + "\n";
 	}
 
 }
