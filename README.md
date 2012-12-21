@@ -1,0 +1,4 @@
+SafeBet
+=======
+
+A safe bet
