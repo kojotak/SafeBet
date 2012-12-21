@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 
 public class SafeBet {
@@ -13,12 +13,11 @@ public class SafeBet {
 	static final int MAX_SIZE = 1000000;
 	static final int MAX_MIRRORS_OF_GIVEN_TYPE = 200000;
 
-	/** mirror type, the / or \ */
-	static enum Type {
+	public static enum Type {
 		SLASH, BACKSLASH
 	}
 
-	static class Mirror {
+	public static class Mirror {
 		public final int row, column;
 		public final Type type;
 
@@ -27,17 +26,18 @@ public class SafeBet {
 				throw new IllegalArgumentException("Cannot create new mirror without valid type!");
 			}
 			if (row < 0 || column < 0 || row > MAX_SIZE || column > MAX_SIZE) {
-				throw new IllegalAccessError("Cannnot create new mirror with invalid coordinate!");
+				throw new IllegalArgumentException("Cannnot create new mirror with invalid coordinate!");
 			}
 			this.row = row;
 			this.column = column;
 			this.type = type;
 		}
+
 	}
 
-	static class Cfg {
+	public static class Cfg {
 		public final int rows, columns;
-		public final HashSet<Mirror> mirrors = new HashSet<Mirror>();
+		public final List<Mirror> mirrors = new ArrayList<Mirror>();
 
 		public Cfg(int rows, int columns) {
 			if (rows < 0 || columns < 0 || rows > MAX_SIZE || columns > MAX_SIZE) {
@@ -65,7 +65,18 @@ public class SafeBet {
 
 	final List<Cfg> configurations;
 
-	public SafeBet(String file) {
+	public SafeBet() {
+		this("SafeBet.input");
+	}
+
+	public SafeBet(Cfg cfg) {
+		if (cfg == null) {
+			throw new IllegalArgumentException("Cannot create safe bet without proper configuration!");
+		}
+		configurations = Collections.singletonList(cfg);
+	}
+
+	private SafeBet(String file) {
 		try {
 			configurations = loadCfg(file);
 		} catch (IOException e) {
@@ -112,10 +123,21 @@ public class SafeBet {
 	}
 
 	public static void main(String[] args) throws Exception {
-		System.out.println(new SafeBet("SafeBet.input").resolve());
+		System.out.println(new SafeBet().resolveAll());
 	}
 
-	public String resolve() {
+	public String resolveAll() {
+		StringBuilder builder = new StringBuilder();
+		for (Cfg cfg : configurations) {
+			String one = resolve(cfg);
+			builder.append(one);
+		}
+		return builder.toString();
+	}
+
+	/** resolve one configuration */
+	private String resolve(Cfg cfg) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
